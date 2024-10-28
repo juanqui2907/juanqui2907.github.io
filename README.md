@@ -1,4 +1,3 @@
-# juanqui2907.github.io
 <html lang="es">
 <head>
     <meta charset="UTF-8">
