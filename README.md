@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -17,10 +16,11 @@
             font-family: Arial, sans-serif;
             background-color: #f0f4f8;
             color: #333;
+            margin: 0;
+            padding: 0;
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin: 0;
         }
 
         header {
@@ -61,7 +61,6 @@
         .car-images img {
             width: 150px;
             height: auto;
-            max-width: 100%; /* Ensures images scale on smaller screens */
             border-radius: 8px;
         }
 
@@ -109,8 +108,36 @@
                 <img src="https://http2.mlstatic.com/D_NQ_NP_784756-MCO75874782978_042024-O.webp" alt="Carro 7">
                 <img src="https://i.ebayimg.com/images/g/ui8AAOSwgfllOFtT/s-l1600.jpg" alt="Carro 8">
                 <img src="https://m.media-amazon.com/images/I/81UpMOhNNiL.jpg" alt="Carro 9">
-                <img src="https://rukminim2.flixcart.com/image/850/1000/xif0q/vehicle-pull-along/g/1/m/hot-wheels-2024-mainline-bugatti-bolide-toptoysindia-18-original-imah2rm8cvxmmw6g.jpeg?q=90&crop=false" alt="Carro 10">
-                <!-- Añadir más imágenes según sea necesario -->
+               <img src="https://rukminim2.flixcart.com/image/850/1000/xif0q/vehicle-pull-along/g/1/m/hot-wheels-2024-mainline-bugatti-bolide-toptoysindia-18-original-imah2rm8cvxmmw6g.jpeg?q=90&crop=false" alt="Carro 10">
+                <img src="https://http2.mlstatic.com/D_NQ_NP_2X_980074-MCO75036287985_032024-E.webp" alt="Carro 11">
+                <img src="https://http2.mlstatic.com/D_NQ_NP_679479-MCO74491391381_022024-O.webp" alt="Carro 12">
+                <img src="https://http2.mlstatic.com/D_NQ_NP_680469-MCO75440808755_032024-O.webp" alt="Carro 13">
+                <img src="https://i.ebayimg.com/thumbs/images/g/VtEAAOSwvTxmq88u/s-l1200.jpg" alt="Carro 14">
+                <img src="https://http2.mlstatic.com/D_NQ_NP_713606-MCO75464972479_032024-O.webp" alt="Carro 15">
+                <img src="https://http2.mlstatic.com/D_NQ_NP_803975-MCO52523157789_112022-O.webp" alt="Carro 16">
+                <img src="https://http2.mlstatic.com/D_NQ_NP_735490-MCO75740925344_042024-O.webp" alt="Carro 17">
+                <img src="https://http2.mlstatic.com/D_NQ_NP_731049-MCO73925788209_012024-O.webp" alt="Carro 18">
+                <img src="https://i.ebayimg.com/images/g/-koAAOSwIMBmQ2mz/s-l1600.jpg" alt="Carro 19">
+                <img src="https://http2.mlstatic.com/D_NQ_NP_976008-MCO74117671264_012024-O.webp" alt="Carro 20">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6WxY-7lpPCbo69XNLvh3oNuVduIWWQyGfGA&s" alt="Carro 21">
+                <img src="https://i.ebayimg.com/images/g/fTYAAOSwTV5k7z~3/s-l1200.webp" alt="Carro 22">
+                <img src="https://m.media-amazon.com/images/I/61j4D2qav1L._AC_UF1000,1000_QL80_.jpg" alt="Carro 23">
+               <img src="https://speedcastings.com/cdn/shop/files/HotWheels-_90AcuraNSX_Amarillo.png?v=1721519048" alt="Carro 24">
+                <img src="https://http2.mlstatic.com/D_NQ_NP_879467-MCO74491301593_022024-O.webp" alt="Carro 25">
+                <img src="https://http2.mlstatic.com/D_NQ_NP_686404-MLC76753129263_052024-O.webp" alt="Carro 26">
+                <img src="https://http2.mlstatic.com/D_NQ_NP_804423-MCO76028091700_052024-O.webp" alt="Carro 27">
+                <img src="https://http2.mlstatic.com/D_NQ_NP_611098-MLB76728497583_052024-O.webp" alt="Carro 28">
+                <img src="https://image1.jdomni.in/product/19052024/47/BA/A4/EE9E0D5A44EE77200568836DA7_1716129108642.jpeg" alt="Carro 29">
+                <img src="https://http2.mlstatic.com/D_NQ_NP_786956-MCO74881547753_032024-O.webp" alt="Carro 30">
+               <img src="https://static.wixstatic.com/media/3f86e4_43579e8597c948bb85b5ca0eb05eaeb0~mv2.jpg/v1/fill/w_498,h_498,al_c,q_80,usm_0.66_1.00_0.01,enc_auto/3f86e4_43579e8597c948bb85b5ca0eb05eaeb0~mv2.jpg" alt="Carro 31">
+                <img src="https://http2.mlstatic.com/D_NQ_NP_854979-MCO74994076785_032024-O.webp" alt="Carro 32">
+                <img src="https://img.ws.mms.shopee.com.co/id-11134207-7r992-lslhddvuh5rx92" alt="Carro 33">
+                <img src="https://http2.mlstatic.com/D_NQ_NP_830962-MCO74252927141_012024-O.webp" alt="Carro 34">
+                <img src="https://http2.mlstatic.com/D_NQ_NP_841003-MCO72674537303_112023-O.webp" alt="Carro 35">
+                 <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJPPe9MCEizP9FW06VBr2L-x4gpUmqhHzHIQ&s" alt="Carro 36">
+                <img src="https://i.ebayimg.com/images/g/gA8AAOSw-fVjly6q/s-l1200.webp" alt="Carro 37">
+                <img src="https://cdnx.jumpseller.com/tu-coche-a-escala/image/50480622/Imagen_de_WhatsApp_2024-07-07_a_las_11.31.14_e633406d.jpg?1720456009" alt="Carro 38">
+                <img src="https://http2.mlstatic.com/D_NQ_NP_934930-MCO77920053336_082024-O.webp" alt="Carro 39">
             </div>
         </div>
 
@@ -124,7 +151,7 @@
         <div class="cars-x5">
             <h2 class="section-title">Matchbox</h2>
             <div class="car-images">
-                <img src="https://http2.mlstatic.com/D_NQ_NP_988261-MCO73763157860_012024-O.webp" alt="Matchbox Carro 1">
+              <img src="https://http2.mlstatic.com/D_NQ_NP_988261-MCO73763157860_012024-O.webp" alt="Matchbox Carro 1">
             </div>
         </div>
 
@@ -136,4 +163,3 @@
 
 </body>
 </html>
-
