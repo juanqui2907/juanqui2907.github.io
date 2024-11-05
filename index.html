@@ -35,21 +35,35 @@
             display: flex;
             justify-content: center;
             margin: 20px 0;
+            flex-wrap: wrap; /* Permite que los botones se muevan a la siguiente línea en pantallas pequeñas */
         }
 
         .tab-link {
             background-color: #3a5ba0;
             color: white;
-            padding: 10px 20px;
+            padding: 10px;
             border: none;
             cursor: pointer;
             transition: background-color 0.3s;
+            flex: 1; /* Permite que los botones ocupen todo el ancho disponible */
+            min-width: 100px; /* Evita que los botones se vuelvan demasiado pequeños */
+            text-align: center;
+            margin: 5px; /* Espaciado entre botones */
         }
 
         .tab-link:hover,
         .tab-link.active {
             background-color: #2e4c86;
         }
+
+        /* Media Query para pantallas pequeñas */
+        @media (max-width: 600px) {
+            .tab-link {
+                padding: 10px 5px; /* Reduce el padding en pantallas pequeñas */
+                font-size: 14px; /* Disminuye el tamaño de la fuente */
+            }
+        }
+
 
         /* Estilos del contenido de las pestañas */
         .tab-content {
