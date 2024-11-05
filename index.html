@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mi Colección de Hot Wheels!</title>
     <style>
+        /* Estilos generales */
         body {
             font-family: Arial, sans-serif;
             background-color: #f0f4f8;
@@ -46,15 +47,15 @@
             width: 150px;
             height: auto;
             border-radius: 8px;
-            cursor: pointer; /* Indicador de interactividad */
+            cursor: pointer;
             transition: transform 0.2s;
         }
 
         .car-images img:hover {
-            transform: scale(1.1); /* Efecto hover */
+            transform: scale(1.1);
         }
 
-        /* Lightbox */
+        /* Lightbox con botón de cierre */
         .lightbox {
             display: none;
             position: fixed;
@@ -72,6 +73,20 @@
             max-width: 90%;
             max-height: 90%;
             border-radius: 8px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #fff;
+            color: #333;
+            border: none;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 50%;
         }
 
         footer {
@@ -165,10 +180,10 @@
             </div>
         </div>
 
-    </div>
-
-    <div class="lightbox" id="lightbox" onclick="closeLightbox()">
-        <img src="" alt="Imagen ampliada">
+        <div class="lightbox" id="lightbox">
+            <button class="close-btn" onclick="closeLightbox()">×</button>
+            <img src="" alt="Imagen ampliada">
+        </div>
     </div>
 
     <footer>
