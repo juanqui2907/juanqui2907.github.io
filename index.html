@@ -30,10 +30,33 @@
             margin-bottom: 10px;
         }
 
-        .about, .cars-to-get, .cars-collected, .cars-x5 {
+        /* Estilos del menú de pestañas */
+        .tab-menu {
+            display: flex;
+            justify-content: center;
+            margin: 20px 0;
+        }
+
+        .tab-link {
+            background-color: #3a5ba0;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .tab-link:hover,
+        .tab-link.active {
+            background-color: #2e4c86;
+        }
+
+        /* Estilos del contenido de las pestañas */
+        .tab-content {
+            display: none; /* Oculta todas las secciones de contenido inicialmente */
+            padding: 20px;
             background-color: #e1e5ec;
             border-radius: 8px;
-            padding: 20px;
             margin-bottom: 20px;
         }
 
@@ -104,12 +127,22 @@
     </header>
 
     <div class="container">
-        <div class="about">
+        <!-- Menú de Pestañas -->
+        <div class="tab-menu">
+            <button class="tab-link active" onclick="openTab(event, 'about')">Sobre mí</button>
+            <button class="tab-link" onclick="openTab(event, 'cars-to-get')">Carros a conseguir</button>
+            <button class="tab-link" onclick="openTab(event, 'cars-collected')">Hot Wheels Coleccionados</button>
+            <button class="tab-link" onclick="openTab(event, 'cars-x5')">Hot Wheels x5</button>
+            <button class="tab-link" onclick="openTab(event, 'matchbox')">Matchbox</button>
+        </div>
+
+        <!-- Contenido de cada pestaña -->
+        <div id="about" class="tab-content">
             <h2 class="section-title">Sobre mí</h2>
             <p>¡Hola! Soy un apasionado de los carros a escala y colecciono Hot Wheels. Esta página está dedicada a mi colección y a los modelos que aún estoy buscando. ¡Bienvenido!</p>
         </div>
 
-        <div class="cars-to-get">
+        <div id="cars-to-get" class="tab-content">
             <h2 class="section-title">Carros a conseguir</h2>
             <ul>
                 <li>Hot Wheels - Nissan Skyline GT-R (R34)</li>
@@ -119,7 +152,7 @@
             </ul>
         </div>
 
-        <div class="cars-collected">
+        <div id="cars-collected" class="tab-content">
             <h2 class="section-title">Hot Wheels Coleccionados</h2>
             <div class="car-images">
                 <img src="https://i.ebayimg.com/thumbs/images/g/QxwAAOSwjsNmrFNc/s-l1200.jpg" alt="Carro 1" onclick="openLightbox(this.src)">
@@ -166,20 +199,21 @@
             </div>
         </div>
 
-        <div class="cars-x5">
+        <div id="cars-x5" class="tab-content">
             <h2 class="section-title">Hot Wheels Coleccionados x5</h2>
             <div class="car-images">
-                <img src="https://images-cdn.ubuy.co.in/633aae6990375a1f9e23ec51-hot-wheels-batman-5-pack-multipack-of-5.jpg" alt="Carro 39-43" onclick="openLightbox(this.src)">
+                <img src="https://images-cdn.ubuy.co.in/633aae6990375a1f9e23ec51-hot-wheels-batman-5-pack-multipack-of-5.jpg" alt="Carro 41-45" onclick="openLightbox(this.src)">
             </div>
         </div>
 
-        <div class="cars-x5">
+        <div id="matchbox" class="tab-content">
             <h2 class="section-title">Matchbox</h2>
             <div class="car-images">
-              <img src="https://http2.mlstatic.com/D_NQ_NP_988261-MCO73763157860_012024-O.webp" alt="Matchbox Carro 1" onclick="openLightbox(this.src)">
+                <img src="https://http2.mlstatic.com/D_NQ_NP_988261-MCO73763157860_012024-O.webp" alt="Matchbox Carro 1" onclick="openLightbox(this.src)">
             </div>
         </div>
 
+        <!-- Lightbox -->
         <div class="lightbox" id="lightbox">
             <button class="close-btn" onclick="closeLightbox()">×</button>
             <img src="" alt="Imagen ampliada">
@@ -191,6 +225,32 @@
     </footer>
 
     <script>
+        // Función para abrir las pestañas
+        function openTab(event, tabName) {
+            // Oculta todos los contenidos de las pestañas
+            var i, tabContent, tabLinks;
+            tabContent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabContent.length; i++) {
+                tabContent[i].style.display = "none";
+            }
+
+            // Remueve la clase "active" de todas las pestañas
+            tabLinks = document.getElementsByClassName("tab-link");
+            for (i = 0; i < tabLinks.length; i++) {
+                tabLinks[i].className = tabLinks[i].className.replace(" active", "");
+            }
+
+            // Muestra el contenido de la pestaña seleccionada
+            document.getElementById(tabName).style.display = "block";
+            event.currentTarget.className += " active";
+        }
+
+        // Muestra la primera pestaña al cargar la página
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementsByClassName("tab-link")[0].click();
+        });
+
+        // Funciones para el Lightbox
         function openLightbox(src) {
             const lightbox = document.getElementById('lightbox');
             lightbox.style.display = 'flex';
