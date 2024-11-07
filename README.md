@@ -1,3 +1,3 @@
 ## Hotwheels
 
-esta es una pagoina creada para tal y tal
+esta es una pagina creada por diversión y mostrar mi colección
