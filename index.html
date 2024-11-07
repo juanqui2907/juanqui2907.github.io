@@ -19,6 +19,46 @@
             color: white;
             padding: 20px;
             text-align: center;
+            position: relative;
+        }
+
+        #theme-toggle {
+            width: 60px;
+            height: 30px;
+            background-color: #fff;
+            border-radius: 15px;
+            border: 2px solid #333;
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 3px;
+            transition: background-color 0.3s, justify-content 0.3s;
+        }
+
+        #theme-toggle.dark {
+            justify-content: flex-end;
+            background-color: #333;
+        }
+
+        #theme-toggle .icon {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: inline-block;
+            transition: background-color 0.3s, background-image 0.3s;
+            background-size: cover;
+        }
+
+        #theme-toggle .icon.sun {
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%23333" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-sun"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>');
+        }
+
+        #theme-toggle.dark .icon {
+            background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="%23fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-moon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>');
         }
 
         .container {
@@ -35,7 +75,7 @@
             display: flex;
             justify-content: center;
             margin: 20px 0;
-            flex-wrap: wrap; /* Permite que los botones se muevan a la siguiente línea en pantallas pequeñas */
+            flex-wrap: wrap;
         }
 
         .tab-link {
@@ -45,10 +85,10 @@
             border: none;
             cursor: pointer;
             transition: background-color 0.3s;
-            flex: 1; /* Permite que los botones ocupen todo el ancho disponible */
-            min-width: 100px; /* Evita que los botones se vuelvan demasiado pequeños */
+            flex: 1;
+            min-width: 100px;
             text-align: center;
-            margin: 5px; /* Espaciado entre botones */
+            margin: 5px;
         }
 
         .tab-link:hover,
@@ -58,16 +98,24 @@
 
         /* Media Query para pantallas pequeñas */
         @media (max-width: 600px) {
+            header {
+                padding: 15px;
+            }
+
+            #theme-toggle {
+                top: auto;
+                bottom: 10px; /* Mueve el botón más abajo para que no cubra el contenido */
+            }
+
             .tab-link {
-                padding: 10px 5px; /* Reduce el padding en pantallas pequeñas */
-                font-size: 14px; /* Disminuye el tamaño de la fuente */
+                padding: 10px 5px;
+                font-size: 14px;
             }
         }
 
-
         /* Estilos del contenido de las pestañas */
         .tab-content {
-            display: none; /* Oculta todas las secciones de contenido inicialmente */
+            display: none;
             padding: 20px;
             background-color: #e1e5ec;
             border-radius: 8px;
@@ -132,12 +180,44 @@
             background-color: #3a5ba0;
             color: white;
         }
+
+        /* Estilos del modo oscuro */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+        header.dark-mode {
+            background-color: #1f1f1f;
+        }
+
+        footer.dark-mode {
+            background-color: #1f1f1f;
+        }
+
+        .tab-link.dark-mode {
+            background-color: #333;
+            color: #e0e0e0;
+        }
+
+        .tab-link.dark-mode:hover,
+        .tab-link.dark-mode.active {
+            background-color: #444;
+        }
+
+        .tab-content.dark-mode {
+            background-color: #1e1e1e;
+            color: #e0e0e0;
+        }
     </style>
 </head>
 <body>
 
     <header>
         <h1>Mi Colección de Hot Wheels</h1>
+        <div id="theme-toggle" onclick="toggleTheme()">
+            <div class="icon sun"></div>
+        </div>
     </header>
 
     <div class="container">
@@ -238,20 +318,15 @@
     <script>
         // Función para abrir las pestañas
         function openTab(event, tabName) {
-            // Oculta todos los contenidos de las pestañas
             var i, tabContent, tabLinks;
             tabContent = document.getElementsByClassName("tab-content");
             for (i = 0; i < tabContent.length; i++) {
                 tabContent[i].style.display = "none";
             }
-
-            // Remueve la clase "active" de todas las pestañas
             tabLinks = document.getElementsByClassName("tab-link");
             for (i = 0; i < tabLinks.length; i++) {
                 tabLinks[i].className = tabLinks[i].className.replace(" active", "");
             }
-
-            // Muestra el contenido de la pestaña seleccionada
             document.getElementById(tabName).style.display = "block";
             event.currentTarget.className += " active";
         }
@@ -271,6 +346,35 @@
         function closeLightbox() {
             const lightbox = document.getElementById('lightbox');
             lightbox.style.display = 'none';
+        }
+
+        // Función para alternar el tema
+        function toggleTheme() {
+            document.body.classList.toggle('dark-mode');
+            document.querySelector('header').classList.toggle('dark-mode');
+            document.querySelector('footer').classList.toggle('dark-mode');
+            const themeToggleButton = document.getElementById('theme-toggle');
+            themeToggleButton.classList.toggle('dark');
+
+            const icon = themeToggleButton.querySelector('.icon');
+            const tabLinks = document.getElementsByClassName('tab-link');
+            const tabContents = document.getElementsByClassName('tab-content');
+
+            for (let i = 0; i < tabLinks.length; i++) {
+                tabLinks[i].classList.toggle('dark-mode');
+            }
+
+            for (let i = 0; i < tabContents.length; i++) {
+                tabContents[i].classList.toggle('dark-mode');
+            }
+
+            if (document.body.classList.contains('dark-mode')) {
+                icon.classList.remove('sun');
+                icon.classList.add('moon');
+            } else {
+                icon.classList.remove('moon');
+                icon.classList.add('sun');
+            }
         }
     </script>
 
