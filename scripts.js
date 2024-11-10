@@ -13,7 +13,7 @@ function openTab(event, tabName) {
     event.currentTarget.className += " active";
 }
 
-// Muestra la primera pestaña al cargar la página
+// Muestra la primera pestaña al cargar la pgina
 document.addEventListener("DOMContentLoaded", function() {
     document.getElementsByClassName("tab-link")[0].click();
 });
