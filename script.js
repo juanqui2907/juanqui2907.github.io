@@ -18,17 +18,39 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementsByClassName("tab-link")[0].click();
 });
 
-// Funciones para el Lightbox
-function openLightbox(src) {
+let currentImageIndex = 0;
+const images = document.querySelectorAll('.car-images img');
+
+function openLightbox(src, index) {
     const lightbox = document.getElementById('lightbox');
+    currentImageIndex = index; // Guarda el índice de la imagen actual
     lightbox.style.display = 'flex';
-    lightbox.querySelector('img').src = src;
+    document.getElementById('lightbox-image').src = src;
 }
 
 function closeLightbox() {
     const lightbox = document.getElementById('lightbox');
     lightbox.style.display = 'none';
 }
+
+function changeImage(direction) {
+    currentImageIndex += direction;
+
+    // Verifica límites y ajusta si es necesario
+    if (currentImageIndex < 0) {
+        currentImageIndex = images.length - 1;
+    } else if (currentImageIndex >= images.length) {
+        currentImageIndex = 0;
+    }
+
+    // Cambia la imagen mostrada en el lightbox
+    document.getElementById('lightbox-image').src = images[currentImageIndex].src;
+}
+
+// Añade el evento de clic a cada imagen de la galería
+images.forEach((img, index) => {
+    img.addEventListener('click', () => openLightbox(img.src, index));
+});
 
 // Función para alternar el tema
 function toggleTheme() {

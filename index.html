@@ -106,12 +106,14 @@
                 <img src="https://http2.mlstatic.com/D_NQ_NP_988261-MCO73763157860_012024-O.webp" alt="Matchbox Carro 1" onclick="openLightbox(this.src)">
             </div>
         </div>
-
-        <!-- Lightbox -->
+        <!-- Lightbox con botones de navegación -->
         <div class="lightbox" id="lightbox">
             <button class="close-btn" onclick="closeLightbox()">×</button>
-            <img src="" alt="Imagen ampliada">
+            <button class="lightbox-prev" onclick="changeImage(-1)">&#10094;</button>
+            <img src="" alt="Imagen ampliada" id="lightbox-image">
+            <button class="lightbox-next" onclick="changeImage(1)">&#10095;</button>
         </div>
+
     </div>
 
     <footer>
