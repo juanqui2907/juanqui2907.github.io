@@ -19,11 +19,16 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 let currentImageIndex = 0;
-const images = document.querySelectorAll('.car-images img');
+let currentCarouselImages = [];
 
 function openLightbox(src, index) {
     const lightbox = document.getElementById('lightbox');
-    currentImageIndex = index; // Guarda el índice de la imagen actual
+    currentImageIndex = index;
+
+    // Encuentra la sección actual de la imagen que se hizo clic
+    const currentSection = event.target.closest('.carousel-section');
+    currentCarouselImages = currentSection.querySelectorAll('.car-images img');
+
     lightbox.style.display = 'flex';
     document.getElementById('lightbox-image').src = src;
 }
@@ -38,17 +43,16 @@ function changeImage(direction) {
 
     // Verifica límites y ajusta si es necesario
     if (currentImageIndex < 0) {
-        currentImageIndex = images.length - 1;
-    } else if (currentImageIndex >= images.length) {
+        currentImageIndex = currentCarouselImages.length - 1;
+    } else if (currentImageIndex >= currentCarouselImages.length) {
         currentImageIndex = 0;
     }
 
-    // Cambia la imagen mostrada en el lightbox
-    document.getElementById('lightbox-image').src = images[currentImageIndex].src;
+    document.getElementById('lightbox-image').src = currentCarouselImages[currentImageIndex].src;
 }
 
 // Añade el evento de clic a cada imagen de la galería
-images.forEach((img, index) => {
+document.querySelectorAll('.car-images img').forEach((img, index) => {
     img.addEventListener('click', () => openLightbox(img.src, index));
 });
 
