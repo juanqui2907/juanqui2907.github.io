@@ -79,4 +79,5 @@ function toggleTheme() {
         icon.classList.remove('moon');
         icon.classList.add('sun');
     }
+    
 }
