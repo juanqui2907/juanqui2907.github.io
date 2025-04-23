@@ -231,19 +231,3 @@ footer.dark-mode {
     background-color: rgba(0, 0, 0, 0.8);
 }
 
-.year-block {
-    margin-bottom: 40px;
-    padding: 20px;
-    border-radius: 10px;
-  }
-  
-  .year-2024 {
-    background-color: #e9f5ff;
-    border: 2px solid #3399ff;
-  }
-  
-  .year-2025 {
-    background-color: #fff4e6;
-    border: 2px solid #ffaa33;
-  }
-  
