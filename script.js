@@ -1,83 +1,143 @@
-// Función para abrir las pestañas
+/* ─── TAB NAVIGATION ─────────────────────────────────────────── */
+let currentActiveTab = 'about';
+
 function openTab(event, tabName) {
-    var i, tabContent, tabLinks;
-    tabContent = document.getElementsByClassName("tab-content");
-    for (i = 0; i < tabContent.length; i++) {
-        tabContent[i].style.display = "none";
-    }
-    tabLinks = document.getElementsByClassName("tab-link");
-    for (i = 0; i < tabLinks.length; i++) {
-        tabLinks[i].className = tabLinks[i].className.replace(" active", "");
-    }
-    document.getElementById(tabName).style.display = "block";
-    event.currentTarget.className += " active";
+    document.querySelectorAll('.tab-content').forEach(el => {
+        el.classList.remove('visible');
+    });
+    document.querySelectorAll('.tab-link').forEach(el => {
+        el.classList.remove('active');
+    });
+
+    const target = document.getElementById(tabName);
+    target.classList.add('visible');
+    event.currentTarget.classList.add('active');
+    currentActiveTab = tabName;
 }
 
-// Muestra la primera pestaña al cargar la página
-document.addEventListener("DOMContentLoaded", function() {
-    document.getElementsByClassName("tab-link")[0].click();
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelector('.tab-link').click();
+    addCountBadges();
+    updateTotalCounter();
+
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        tab.addEventListener('click', e => {
+            const img = e.target.closest('.car-images img');
+            if (img) openLightbox(img);
+        });
+    });
+
+    document.addEventListener('keydown', e => {
+        const lb = document.getElementById('lightbox');
+        if (lb.style.display === 'flex') {
+            if (e.key === 'Escape')     closeLightbox();
+            if (e.key === 'ArrowRight') changeImage(1);
+            if (e.key === 'ArrowLeft')  changeImage(-1);
+        }
+    });
+
+    document.getElementById('lightbox').addEventListener('click', e => {
+        if (e.target === e.currentTarget) closeLightbox();
+    });
+
+    if (localStorage.getItem('theme') === 'dark') {
+        applyDark();
+        const label = document.getElementById('toggle-label');
+        if (label) label.textContent = '☀️';
+    }
 });
 
-let currentImageIndex = 0;
-const images = document.querySelectorAll('.car-images img');
+/* ─── CONTADORES ─────────────────────────────────────────────── */
+function addCountBadges() {
+    document.querySelectorAll('.tab-link').forEach(btn => {
+        const match = btn.getAttribute('onclick').match(/'([^']+)'\s*\)/);
+        if (!match) return;
+        const tabEl = document.getElementById(match[1]);
+        if (!tabEl) return;
+        const count = tabEl.querySelectorAll('.car-images img').length;
+        if (count > 0) {
+            btn.innerHTML = btn.textContent.trim() +
+                ' <span class="tab-badge">' + count + '</span>';
+        }
+    });
 
-function openLightbox(src, index) {
-    const lightbox = document.getElementById('lightbox');
-    currentImageIndex = index; // Guarda el índice de la imagen actual
-    lightbox.style.display = 'flex';
-    document.getElementById('lightbox-image').src = src;
+    document.querySelectorAll('.tab-content').forEach(tab => {
+        const titles   = Array.from(tab.querySelectorAll('.section-title'));
+        const galleries = Array.from(tab.querySelectorAll('.car-images'));
+        titles.forEach((title, i) => {
+            if (!galleries[i]) return;
+            const n = galleries[i].querySelectorAll('img').length;
+            const badge = document.createElement('span');
+            badge.className = 'section-badge';
+            badge.textContent = ' (' + n + ')';
+            title.appendChild(badge);
+        });
+    });
+}
+
+function updateTotalCounter() {
+    const total = document.querySelectorAll('.car-images img').length;
+    const el = document.querySelector('#about strong');
+    if (el) el.textContent = total + ' carros y contando...';
+}
+
+/* ─── LIGHTBOX ───────────────────────────────────────────────── */
+let currentTabImages = [];
+let currentImageIndex = 0;
+
+function openLightbox(imgElement) {
+    const activeTab = document.querySelector('.tab-content.visible');
+    currentTabImages = Array.from(activeTab.querySelectorAll('.car-images img'));
+    currentImageIndex = currentTabImages.indexOf(imgElement);
+    document.getElementById('lightbox-image').src = imgElement.src;
+    document.getElementById('lightbox').style.display = 'flex';
 }
 
 function closeLightbox() {
-    const lightbox = document.getElementById('lightbox');
-    lightbox.style.display = 'none';
+    document.getElementById('lightbox').style.display = 'none';
 }
 
 function changeImage(direction) {
     currentImageIndex += direction;
-
-    // Verifica límites y ajusta si es necesario
-    if (currentImageIndex < 0) {
-        currentImageIndex = images.length - 1;
-    } else if (currentImageIndex >= images.length) {
-        currentImageIndex = 0;
-    }
-
-    // Cambia la imagen mostrada en el lightbox
-    document.getElementById('lightbox-image').src = images[currentImageIndex].src;
+    if (currentImageIndex < 0) currentImageIndex = currentTabImages.length - 1;
+    else if (currentImageIndex >= currentTabImages.length) currentImageIndex = 0;
+    document.getElementById('lightbox-image').src = currentTabImages[currentImageIndex].src;
 }
 
-// Añade el evento de clic a cada imagen de la galería
-images.forEach((img, index) => {
-    img.addEventListener('click', () => openLightbox(img.src, index));
-});
+/* ─── MODO OSCURO ────────────────────────────────────────────── */
+function applyDark() {
+    document.body.classList.add('dark-mode');
+    document.getElementById('theme-toggle').classList.add('dark');
+}
 
-// Función para alternar el tema
+function removeDark() {
+    document.body.classList.remove('dark-mode');
+    document.getElementById('theme-toggle').classList.remove('dark');
+}
+
 function toggleTheme() {
-    document.body.classList.toggle('dark-mode');
-    document.querySelector('header').classList.toggle('dark-mode');
-    document.querySelector('footer').classList.toggle('dark-mode');
-    const themeToggleButton = document.getElementById('theme-toggle');
-    themeToggleButton.classList.toggle('dark');
-
-    const icon = themeToggleButton.querySelector('.icon');
-    const tabLinks = document.getElementsByClassName('tab-link');
-    const tabContents = document.getElementsByClassName('tab-content');
-
-    for (let i = 0; i < tabLinks.length; i++) {
-        tabLinks[i].classList.toggle('dark-mode');
-    }
-
-    for (let i = 0; i < tabContents.length; i++) {
-        tabContents[i].classList.toggle('dark-mode');
-    }
-
-    if (document.body.classList.contains('dark-mode')) {
-        icon.classList.remove('sun');
-        icon.classList.add('moon');
+    const isDark = document.body.classList.contains('dark-mode');
+    if (isDark) {
+        removeDark();
+        localStorage.setItem('theme', 'light');
     } else {
-        icon.classList.remove('moon');
-        icon.classList.add('sun');
+        applyDark();
+        localStorage.setItem('theme', 'dark');
     }
-    
+    const label = document.getElementById('toggle-label');
+    if (label) label.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
 }
+
+/* ─── ACTUALIZA EMOJI DEL BOTÓN ──────────────────────────────── */
+function updateToggleLabel() {
+    const label = document.getElementById('toggle-label');
+    if (!label) return;
+    label.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+}
+
+// Sobrescribir para incluir label update
+const _applyDark   = applyDark;
+const _removeDark  = removeDark;
+
+applyDark  = function() { _applyDark();  updateToggleLabel(); };
+removeDark = function() { _removeDark(); updateToggleLabel(); };
