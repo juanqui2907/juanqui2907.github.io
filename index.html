@@ -12,27 +12,46 @@
     <header>
         <h1>Mi Colección de Hot Wheels</h1>
         <button id="theme-toggle" onclick="toggleTheme()" aria-label="Cambiar tema oscuro/claro">
-            <svg viewBox="0 0 92 44" xmlns="http://www.w3.org/2000/svg" width="64" height="31">
-                <!-- Carrocería inferior -->
-                <path d="M10 22 L10 31 Q10 33 13 33 L79 33 Q82 33 82 31 L82 22 Z" class="car-body"/>
+            <svg viewBox="0 0 100 100" width="52" height="52" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <filter id="glow-led" x="-80%" y="-80%" width="260%" height="260%">
+                        <feGaussianBlur stdDeviation="2.2" result="b"/>
+                        <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+                    </filter>
+                    <radialGradient id="halo-grad" cx="50%" cy="50%" r="50%">
+                        <stop offset="0%" stop-color="#00e5ff" stop-opacity="0.38"/>
+                        <stop offset="100%" stop-color="#00e5ff" stop-opacity="0"/>
+                    </radialGradient>
+                </defs>
+                <!-- Fondo circular oscuro -->
+                <circle cx="50" cy="50" r="49" fill="#090b10"/>
                 <!-- Techo/cabina -->
-                <path d="M22 22 L30 8 L62 8 L70 22 Z" class="car-body"/>
-                <!-- Vidrios -->
-                <path d="M28 22 L34 10 L58 10 L66 22 Z" class="car-glass"/>
-                <!-- Rueda delantera -->
-                <circle cx="24" cy="33" r="9" class="car-wheel"/>
-                <circle cx="24" cy="33" r="3.5" class="car-hubcap"/>
-                <!-- Rueda trasera -->
-                <circle cx="68" cy="33" r="9" class="car-wheel"/>
-                <circle cx="68" cy="33" r="3.5" class="car-hubcap"/>
-                <!-- Faro delantero (se apaga en dark mode) -->
-                <ellipse cx="84" cy="25" rx="6" ry="4" class="car-headlight"/>
-                <!-- Luz trasera (se apaga en dark mode) -->
-                <rect x="6" y="23" width="5" height="6" rx="1.5" class="car-taillight"/>
-                <!-- Parachoques delantero -->
-                <rect x="79" y="29" width="7" height="3" rx="1" class="car-body"/>
+                <path d="M31 46 Q50 29 69 46" fill="none" stroke="#181820" stroke-width="8" stroke-linecap="round"/>
+                <!-- Capó / hood -->
+                <rect x="11" y="44" width="78" height="16" rx="4" fill="#101015"/>
+                <!-- Parachoques -->
+                <rect x="9" y="58" width="82" height="16" rx="7" fill="#0d0d12"/>
+                <!-- Barra de parrilla -->
+                <rect x="30" y="66" width="40" height="3.5" rx="1.5" fill="#1e1e26"/>
+                <!-- Alojamiento faro IZQUIERDO -->
+                <path d="M12 57 L17 45 L41 47 L40 59 Z" fill="#07090e"/>
+                <!-- Tira LED izquierda -->
+                <path d="M16 55 L20 47 L38 49 L37 55"
+                      fill="none" stroke="#00e0f5" stroke-width="2.8"
+                      stroke-linecap="round" stroke-linejoin="round"
+                      class="led-left"/>
+                <!-- Halo izquierdo -->
+                <ellipse cx="27" cy="51" rx="17" ry="10" fill="url(#halo-grad)" class="halo-left"/>
+                <!-- Alojamiento faro DERECHO -->
+                <path d="M88 57 L83 45 L59 47 L60 59 Z" fill="#07090e"/>
+                <!-- Tira LED derecha -->
+                <path d="M84 55 L80 47 L62 49 L63 55"
+                      fill="none" stroke="#00e0f5" stroke-width="2.8"
+                      stroke-linecap="round" stroke-linejoin="round"
+                      class="led-right"/>
+                <!-- Halo derecho -->
+                <ellipse cx="73" cy="51" rx="17" ry="10" fill="url(#halo-grad)" class="halo-right"/>
             </svg>
-            <span class="toggle-label" id="toggle-label">🌙</span>
         </button>
     </header>
 
@@ -54,7 +73,7 @@
             <p><em>"La vida es un viaje, y cada carro a escala es un recuerdo en miniatura de los caminos que soñamos recorrer."</em></p>
             <p><strong>75 carros y contando...</strong> porque siempre hay espacio para uno más en el garaje de los sueños.</p>
             <div style="text-align: center;">
-                <img src="Juanqui.jpeg" alt="Foto de Juanqui" style="border-radius: 50%; width: 200px; height: 200px;">
+                <img src="Juanqui.jpeg" alt="Foto de Juanqui" class="profile-photo">
                 <h3>Juanqui</h3>
             </div>
         </div>         

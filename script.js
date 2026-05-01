@@ -52,7 +52,9 @@ function addCountBadges() {
     document.querySelectorAll('.tab-link').forEach(btn => {
         const match = btn.getAttribute('onclick').match(/'([^']+)'\s*\)/);
         if (!match) return;
-        const tabEl = document.getElementById(match[1]);
+        const tabId = match[1];
+        if (tabId === 'cars-to-get') return; // No son carros coleccionados
+        const tabEl = document.getElementById(tabId);
         if (!tabEl) return;
         const count = tabEl.querySelectorAll('.car-images img').length;
         if (count > 0) {
@@ -76,7 +78,9 @@ function addCountBadges() {
 }
 
 function updateTotalCounter() {
-    const total = document.querySelectorAll('.car-images img').length;
+    // Solo cuenta tabs de carros coleccionados (excluye lista de deseos)
+    const wishlist = document.querySelectorAll('#cars-to-get .car-images img').length;
+    const total = document.querySelectorAll('.car-images img').length - wishlist;
     const el = document.querySelector('#about strong');
     if (el) el.textContent = total + ' carros y contando...';
 }
