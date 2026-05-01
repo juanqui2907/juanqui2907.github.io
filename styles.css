@@ -242,8 +242,8 @@ hr {
 
 .car-images img {
     width: 100%;
-    aspect-ratio: 1 / 1;
-    object-fit: cover;
+    height: 140px;
+    object-fit: contain;
     border-radius: 8px;
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
