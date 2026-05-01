@@ -76,45 +76,53 @@ header h1 {
     display: flex;
     align-items: center;
     justify-content: center;
-    /* Anillo exterior con brillo teal */
-    box-shadow: 0 0 0 2.5px rgba(0, 220, 240, 0.45),
-                0 0 10px rgba(0, 220, 240, 0.18);
+    /* Anillo claro en modo día */
+    box-shadow: 0 0 0 2.5px rgba(200, 208, 220, 0.9);
     transition: box-shadow 0.4s;
 }
 
 #theme-toggle:hover {
-    box-shadow: 0 0 0 2.5px rgba(0, 220, 240, 0.75),
-                0 0 18px rgba(0, 220, 240, 0.3);
+    box-shadow: 0 0 0 2.5px rgba(160, 172, 190, 1);
 }
 
-/* Faros ENCENDIDOS — modo claro */
+/* Faros AMARILLOS — modo claro (de día) */
 .led-left, .led-right {
-    stroke: #00e0f5;
+    stroke: #F5C000;
     filter: url(#glow-led);
     transition: stroke 0.4s, filter 0.4s;
 }
 .halo-left, .halo-right {
-    opacity: 1;
-    transition: opacity 0.4s;
+    fill: #FFD700;
+    opacity: 0.22;
+    transition: opacity 0.4s, fill 0.4s;
 }
 
-/* Faros APAGADOS — modo oscuro */
+/* Faros CYAN encendidos — modo oscuro (de noche) */
 body.dark-mode .led-left,
 body.dark-mode .led-right {
-    stroke: #18222a;
-    filter: none;
+    stroke: #00e0f5;
+    filter: url(#glow-led);
 }
 body.dark-mode .halo-left,
 body.dark-mode .halo-right {
-    opacity: 0;
+    fill: #00e5ff;
+    opacity: 0.22;
 }
 
-/* Anillo se apaga también en dark mode */
+/* Anillo teal en dark mode */
+/* Fondo del círculo SVG: claro en día, oscuro de noche */
+.btn-circle { fill: #f0f4f8; transition: fill 0.4s; }
+body.dark-mode .btn-circle { fill: #090b10; }
+
+/* Carrocería del carro: oscura en ambos modos */
+
 body.dark-mode #theme-toggle {
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.12);
+    box-shadow: 0 0 0 2.5px rgba(0, 220, 240, 0.55),
+                0 0 10px rgba(0, 220, 240, 0.18);
 }
 body.dark-mode #theme-toggle:hover {
-    box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.28);
+    box-shadow: 0 0 0 2.5px rgba(0, 220, 240, 0.85),
+                0 0 18px rgba(0, 220, 240, 0.28);
 }
 
 /* ═══════════════════════════════════════════════════════════════
@@ -234,7 +242,8 @@ hr {
 
 .car-images img {
     width: 100%;
-    height: auto;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
     border-radius: 8px;
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
