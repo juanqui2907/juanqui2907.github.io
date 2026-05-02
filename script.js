@@ -13,17 +13,10 @@ function openTab(event, tabName) {
     target.classList.add('visible');
     event.currentTarget.classList.add('active');
     currentActiveTab = tabName;
-
-    // Sincroniza drawer-tab active
-    document.querySelectorAll('.drawer-tab').forEach(b => {
-        b.classList.toggle('active', b.dataset.tab === tabName);
-    });
-
-    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-    document.querySelector('.tab-menu .tab-link').click();
+    document.querySelector('.tab-link').click();
     addCountBadges();
     updateTotalCounter();
 
@@ -56,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 /* ─── CONTADORES ─────────────────────────────────────────────── */
 function addCountBadges() {
-    document.querySelectorAll('.tab-link:not(.drawer-tab)').forEach(btn => {
+    document.querySelectorAll('.tab-link').forEach(btn => {
         const match = btn.getAttribute('onclick').match(/'([^']+)'\s*\)/);
         if (!match) return;
         const tabId = match[1];
@@ -152,54 +145,3 @@ const _removeDark  = removeDark;
 
 applyDark  = function() { _applyDark();  updateToggleLabel(); };
 removeDark = function() { _removeDark(); updateToggleLabel(); };
-
-/* ─── MENÚ HAMBURGUESA ──────────────────────────────────── */
-(function() {
-  const hamburger = document.getElementById('hamburger');
-  const drawer    = document.getElementById('drawer');
-  const overlay   = document.getElementById('drawerOverlay');
-  const closeBtn  = document.getElementById('drawerClose');
-
-  if (!hamburger) return;
-
-  function openDrawer() {
-    drawer.classList.add('open');
-    overlay.classList.add('open');
-    hamburger.classList.add('open');
-    hamburger.setAttribute('aria-expanded', 'true');
-    drawer.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-  }
-
-  function closeDrawer() {
-    drawer.classList.remove('open');
-    overlay.classList.remove('open');
-    hamburger.classList.remove('open');
-    hamburger.setAttribute('aria-expanded', 'false');
-    drawer.setAttribute('aria-hidden', 'true');
-    document.body.style.overflow = '';
-  }
-
-  hamburger.addEventListener('click', () =>
-    drawer.classList.contains('open') ? closeDrawer() : openDrawer()
-  );
-  closeBtn.addEventListener('click', closeDrawer);
-  overlay.addEventListener('click', closeDrawer);
-
-  // Cierra al seleccionar un tab y sincroniza el active
-  document.querySelectorAll('.drawer-tab').forEach(btn => {
-    btn.addEventListener('click', () => {
-      document.querySelectorAll('.drawer-tab').forEach(b => b.classList.remove('active'));
-      btn.classList.add('active');
-      closeDrawer();
-    });
-  });
-
-  // Swipe para cerrar (arrastra a la izquierda)
-  let startX = null;
-  drawer.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, { passive: true });
-  drawer.addEventListener('touchend', e => {
-    if (startX !== null && startX - e.changedTouches[0].clientX > 60) closeDrawer();
-    startX = null;
-  }, { passive: true });
-})();
