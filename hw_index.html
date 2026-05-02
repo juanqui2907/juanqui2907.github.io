@@ -10,6 +10,9 @@
 <body>
 
     <header>
+        <button id="hamburger" class="hamburger" aria-label="Abrir menú" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
         <h1>Mi Colección de Hot Wheels</h1>
         <button id="theme-toggle" onclick="toggleTheme()" aria-label="Cambiar tema oscuro/claro">
             <svg viewBox="0 0 100 100" width="52" height="52" xmlns="http://www.w3.org/2000/svg">
@@ -202,5 +205,32 @@
 
     <script src="script.js"></script>
     
+
+    <!-- Drawer móvil -->
+    <div id="drawerOverlay" class="drawer-overlay"></div>
+    <nav id="drawer" class="drawer" aria-hidden="true">
+      <div class="drawer-header">
+        <span class="drawer-brand">🏎️ Mi Colección</span>
+        <button id="drawerClose" class="drawer-close" aria-label="Cerrar">✕</button>
+      </div>
+      <div class="drawer-items">
+        <button class="tab-link drawer-tab active" onclick="openTab(event, 'about')" data-tab="about">
+          <span class="drawer-icon">👤</span> Sobre mí
+        </button>
+        <button class="tab-link drawer-tab" onclick="openTab(event, 'cars-to-get')" data-tab="cars-to-get">
+          <span class="drawer-icon">🎯</span> Carros a conseguir
+        </button>
+        <button class="tab-link drawer-tab" onclick="openTab(event, 'cars-collected')" data-tab="cars-collected">
+          <span class="drawer-icon">🚗</span> Hot Wheels Coleccionados
+        </button>
+        <button class="tab-link drawer-tab" onclick="openTab(event, 'cars-x5')" data-tab="cars-x5">
+          <span class="drawer-icon">⭐</span> Hot Wheels x5
+        </button>
+        <button class="tab-link drawer-tab" onclick="openTab(event, 'matchbox')" data-tab="matchbox">
+          <span class="drawer-icon">📦</span> Matchbox
+        </button>
+      </div>
+    </nav>
+
 </body>
 </html>
