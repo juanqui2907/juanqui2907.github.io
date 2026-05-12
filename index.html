@@ -10,6 +10,11 @@
 <body>
 
     <header>
+        <button id="menu-toggle" class="menu-toggle" onclick="toggleMobileMenu()" aria-label="Abrir menú" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
         <h1>Mi Colección de Hot Wheels</h1>
         <button id="theme-toggle" onclick="toggleTheme()" aria-label="Cambiar tema oscuro/claro">
             <svg viewBox="0 0 100 100" width="52" height="52" xmlns="http://www.w3.org/2000/svg">
@@ -55,9 +60,12 @@
         </button>
     </header>
 
+    <!-- Backdrop oscuro detrás del menú móvil -->
+    <div class="menu-backdrop" onclick="closeMobileMenu()"></div>
+
     <div class="container">
         <!-- Menú de Pestañas -->
-        <div class="tab-menu">
+        <div class="tab-menu" id="tab-menu">
             <button class="tab-link active" onclick="openTab(event, 'about')">Sobre mí</button>
             <button class="tab-link" onclick="openTab(event, 'cars-to-get')">Carros a conseguir</button>
             <button class="tab-link" onclick="openTab(event, 'cars-collected')">Hot Wheels Coleccionados</button>

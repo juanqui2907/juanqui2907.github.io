@@ -13,6 +13,33 @@ function openTab(event, tabName) {
     target.classList.add('visible');
     event.currentTarget.classList.add('active');
     currentActiveTab = tabName;
+
+    // En móvil, cerrar el menú tras elegir una pestaña
+    if (window.innerWidth <= 768) closeMobileMenu();
+}
+
+/* ─── MENÚ HAMBURGUESA (MÓVIL) ───────────────────────────────── */
+function toggleMobileMenu() {
+    const menu = document.getElementById('tab-menu');
+    const toggle = document.getElementById('menu-toggle');
+    const backdrop = document.querySelector('.menu-backdrop');
+    const isOpen = menu.classList.toggle('open');
+    toggle.classList.toggle('open', isOpen);
+    backdrop.classList.toggle('open', isOpen);
+    document.body.classList.toggle('menu-open', isOpen);
+    toggle.setAttribute('aria-expanded', isOpen);
+}
+
+function closeMobileMenu() {
+    const menu = document.getElementById('tab-menu');
+    const toggle = document.getElementById('menu-toggle');
+    const backdrop = document.querySelector('.menu-backdrop');
+    if (!menu.classList.contains('open')) return;
+    menu.classList.remove('open');
+    toggle.classList.remove('open');
+    backdrop.classList.remove('open');
+    document.body.classList.remove('menu-open');
+    toggle.setAttribute('aria-expanded', 'false');
 }
 
 document.addEventListener('DOMContentLoaded', function () {
