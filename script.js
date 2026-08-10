@@ -75,6 +75,15 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 /* ─── CONTADORES ─────────────────────────────────────────────── */
+// Cada imagen normalmente representa 1 carro. Para paquetes (por ejemplo x5),
+// se puede indicar cuántos carros contiene usando data-count="5" en la imagen.
+function countCarsWithin(container) {
+    return Array.from(container.querySelectorAll('.car-images img')).reduce((total, img) => {
+        const amount = Number.parseInt(img.dataset.count || '1', 10);
+        return total + (Number.isFinite(amount) && amount > 0 ? amount : 1);
+    }, 0);
+}
+
 function addCountBadges() {
     document.querySelectorAll('.tab-link').forEach(btn => {
         const match = btn.getAttribute('onclick').match(/'([^']+)'\s*\)/);
@@ -83,7 +92,7 @@ function addCountBadges() {
         if (tabId === 'cars-to-get') return; // No son carros coleccionados
         const tabEl = document.getElementById(tabId);
         if (!tabEl) return;
-        const count = tabEl.querySelectorAll('.car-images img').length;
+        const count = countCarsWithin(tabEl);
         if (count > 0) {
             btn.innerHTML = btn.textContent.trim() +
                 ' <span class="tab-badge">' + count + '</span>';
@@ -91,11 +100,11 @@ function addCountBadges() {
     });
 
     document.querySelectorAll('.tab-content').forEach(tab => {
-        const titles   = Array.from(tab.querySelectorAll('.section-title'));
+        const titles    = Array.from(tab.querySelectorAll('.section-title'));
         const galleries = Array.from(tab.querySelectorAll('.car-images'));
         titles.forEach((title, i) => {
             if (!galleries[i]) return;
-            const n = galleries[i].querySelectorAll('img').length;
+            const n = countCarsWithin(galleries[i]);
             const badge = document.createElement('span');
             badge.className = 'section-badge';
             badge.textContent = ' (' + n + ')';
@@ -105,9 +114,10 @@ function addCountBadges() {
 }
 
 function updateTotalCounter() {
-    // Solo cuenta tabs de carros coleccionados (excluye lista de deseos)
-    const wishlist = document.querySelectorAll('#cars-to-get .car-images img').length;
-    const total = document.querySelectorAll('.car-images img').length - wishlist;
+    // Cuenta carros reales, no cantidad de fotos. La lista de deseos se excluye.
+    const collectedTabs = Array.from(document.querySelectorAll('.tab-content'))
+        .filter(tab => tab.id !== 'cars-to-get' && tab.id !== 'about');
+    const total = collectedTabs.reduce((sum, tab) => sum + countCarsWithin(tab), 0);
     const el = document.querySelector('#about strong');
     if (el) el.textContent = total + ' carros y contando...';
 }
