@@ -508,11 +508,6 @@ hr {
     background: radial-gradient(ellipse at 50% 85%, rgba(58,91,160,0.18), transparent 70%);
 }
 #garage-canvas:active { cursor: grabbing; }
-.garage-hint {
-    margin: 6px 0 0;
-    font-size: 13px;
-    opacity: 0.65;
-}
 .garage.failed { display: none; }
 
 /* (6) Contador */
