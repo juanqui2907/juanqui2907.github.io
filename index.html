@@ -80,6 +80,10 @@
             <p>He creado esta página para que los usuarios tengan una experiencia agradable mientras navegan por mi colección. Puedes hacer clic en cualquier carro para verlo ampliado, y tendrás la opción de salir fácilmente al presionar la "X".</p>
             <p><em>"La vida es un viaje, y cada carro a escala es un recuerdo en miniatura de los caminos que soñamos recorrer."</em></p>
             <p><strong>75 carros y contando...</strong> porque siempre hay espacio para uno más en el garaje de los sueños.</p>
+            <div class="garage" id="garage" aria-label="Carro 3D girando. Arrástralo para rotarlo, tócalo para cambiar el color.">
+                <canvas id="garage-canvas"></canvas>
+                <p class="garage-hint">Arrástralo para girarlo · tócalo para cambiar el color</p>
+            </div>
             <div style="text-align: center;">
                 <img src="Juanqui.jpeg" alt="Foto de Juanqui" class="profile-photo">
                 <h3>Juanqui</h3>
@@ -206,7 +210,13 @@
         <div class="lightbox" id="lightbox">
             <button class="close-btn" onclick="closeLightbox()">×</button>
             <button class="lightbox-prev" onclick="changeImage(-1)">&#10094;</button>
-            <img src="" alt="Imagen ampliada" id="lightbox-image">
+            <div class="lb-stage">
+                <div class="lb-card" id="lb-card">
+                    <img src="" alt="Imagen ampliada" id="lightbox-image">
+                    <span class="lb-glare" aria-hidden="true"></span>
+                </div>
+            </div>
+            <button class="lb-gyro" id="lb-gyro" hidden>Inclinar con el celular</button>
             <button class="lightbox-next" onclick="changeImage(1)">&#10095;</button>
         </div>
 
@@ -217,6 +227,15 @@
     </footer>
 
     <script src="script.js"></script>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+        }
+    }
+    </script>
+    <script type="module" src="garage.js" onerror="document.getElementById('garage').classList.add('failed')"></script>
     
 </body>
 </html>

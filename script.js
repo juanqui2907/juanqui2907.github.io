@@ -69,6 +69,143 @@ function countUp(el, total) {
     requestAnimationFrame(step);
 }
 
+/* ─── 3D: BLÍSTER EN LA MANO (lightbox) ─────────────────────── */
+const MAX_TILT = 12; // grados
+const tilt = { rx: 0, ry: 0, gx: 50, gy: 50, go: 0,
+               trx: 0, try_: 0, tgx: 50, tgy: 50, tgo: 0,
+               raf: 0, gyro: false, base: null, drag: null };
+const clamp = (v, a) => Math.max(-a, Math.min(a, v));
+
+function tiltLoop() {
+    const k = 0.14;
+    tilt.rx += (tilt.trx  - tilt.rx) * k;
+    tilt.ry += (tilt.try_ - tilt.ry) * k;
+    tilt.gx += (tilt.tgx  - tilt.gx) * k;
+    tilt.gy += (tilt.tgy  - tilt.gy) * k;
+    tilt.go += (tilt.tgo  - tilt.go) * k;
+    const card = document.getElementById('lb-card');
+    card.style.setProperty('--rx', tilt.rx.toFixed(2) + 'deg');
+    card.style.setProperty('--ry', tilt.ry.toFixed(2) + 'deg');
+    card.style.setProperty('--gx', tilt.gx.toFixed(1) + '%');
+    card.style.setProperty('--gy', tilt.gy.toFixed(1) + '%');
+    card.style.setProperty('--go', tilt.go.toFixed(3));
+    const settled = Math.abs(tilt.trx - tilt.rx) + Math.abs(tilt.try_ - tilt.ry) + Math.abs(tilt.tgo - tilt.go) < 0.01;
+    const open = document.getElementById('lightbox').classList.contains('open');
+    tilt.raf = (open || !settled) ? requestAnimationFrame(tiltLoop) : 0;
+}
+function kickTilt() { if (!tilt.raf) tilt.raf = requestAnimationFrame(tiltLoop); }
+
+function setTiltTarget(px, py, glare) {
+    // px, py: posición relativa 0..1 sobre la tarjeta
+    tilt.try_ = clamp((px - 0.5) * 2 * MAX_TILT, MAX_TILT);
+    tilt.trx  = clamp(-(py - 0.5) * 2 * MAX_TILT, MAX_TILT);
+    tilt.tgx = px * 100;
+    tilt.tgy = py * 100;
+    tilt.tgo = glare;
+    kickTilt();
+}
+function resetTilt(instant) {
+    tilt.trx = tilt.try_ = 0; tilt.tgo = 0; tilt.tgx = tilt.tgy = 50;
+    if (instant) {
+        tilt.rx = tilt.ry = tilt.go = 0; tilt.gx = tilt.gy = 50;
+        const card = document.getElementById('lb-card');
+        ['--rx', '--ry'].forEach(v => card.style.setProperty(v, '0deg'));
+        card.style.setProperty('--go', '0');
+    }
+    kickTilt();
+}
+
+function onOrientation(e) {
+    if (e.beta == null || e.gamma == null) return;
+    if (!document.getElementById('lightbox').classList.contains('open')) return;
+    tilt.gyro = true;
+    if (!tilt.base) tilt.base = { b: e.beta, g: e.gamma };
+    const db = clamp(e.beta  - tilt.base.b, 25) / 25; // -1..1
+    const dg = clamp(e.gamma - tilt.base.g, 25) / 25;
+    setTiltTarget(0.5 + dg / 2, 0.5 + db / 2, 0.9);
+}
+
+function setupLightboxTilt() {
+    if (reducedMotion.matches) return;
+    const lb = document.getElementById('lightbox');
+    const card = document.getElementById('lb-card');
+    const gyroBtn = document.getElementById('lb-gyro');
+    const coarse = window.matchMedia('(pointer: coarse)').matches;
+
+    // PC: la tarjeta sigue al mouse
+    lb.addEventListener('pointermove', e => {
+        if (e.pointerType !== 'mouse') return;
+        const r = card.getBoundingClientRect();
+        const px = Math.min(Math.max((e.clientX - r.left) / r.width, 0), 1);
+        const py = Math.min(Math.max((e.clientY - r.top) / r.height, 0), 1);
+        setTiltTarget(px, py, 1);
+    });
+    lb.addEventListener('pointerleave', e => { if (e.pointerType === 'mouse') resetTilt(); });
+
+    // Celular sin giroscopio: inclinar arrastrando con el dedo
+    card.addEventListener('pointerdown', e => {
+        if (e.pointerType === 'mouse' || tilt.gyro) return;
+        tilt.drag = { x: e.clientX, y: e.clientY };
+        card.setPointerCapture(e.pointerId);
+    });
+    card.addEventListener('pointermove', e => {
+        if (!tilt.drag) return;
+        const dx = (e.clientX - tilt.drag.x) / 160;
+        const dy = (e.clientY - tilt.drag.y) / 160;
+        setTiltTarget(0.5 + clamp(dx, 0.5), 0.5 + clamp(dy, 0.5), 0.9);
+    });
+    const endDrag = () => { if (tilt.drag) { tilt.drag = null; resetTilt(); } };
+    card.addEventListener('pointerup', endDrag);
+    card.addEventListener('pointercancel', endDrag);
+
+    // Giroscopio: Android lo da directo; iPhone pide permiso con un botón
+    if (coarse && 'DeviceOrientationEvent' in window) {
+        if (typeof DeviceOrientationEvent.requestPermission === 'function') {
+            gyroBtn.hidden = false;
+            gyroBtn.addEventListener('click', async e => {
+                e.stopPropagation();
+                try {
+                    if (await DeviceOrientationEvent.requestPermission() === 'granted') {
+                        window.addEventListener('deviceorientation', onOrientation);
+                    }
+                } catch (err) {}
+                gyroBtn.hidden = true;
+            });
+        } else {
+            window.addEventListener('deviceorientation', onOrientation);
+        }
+    }
+}
+
+/* ─── 3D: TILT EN LA GRILLA (solo con mouse) ────────────────── */
+function setupGridTilt() {
+    const fine = window.matchMedia('(hover: hover) and (pointer: fine)');
+    document.querySelectorAll('.car-images').forEach(grid => {
+        grid.addEventListener('pointermove', e => {
+            if (!fine.matches || reducedMotion.matches || e.pointerType !== 'mouse') return;
+            const img = e.target.closest('img');
+            if (!img) return;
+            const r = img.getBoundingClientRect();
+            const px = (e.clientX - r.left) / r.width - 0.5;
+            const py = (e.clientY - r.top) / r.height - 0.5;
+            img.classList.add('tilting');
+            img.style.transform =
+                `perspective(600px) rotateX(${(-py * 16).toFixed(2)}deg) rotateY(${(px * 16).toFixed(2)}deg) scale(1.04)`;
+            img.style.boxShadow = `${(-px * 14).toFixed(1)}px ${(8 - py * 10).toFixed(1)}px 22px rgba(0,0,0,0.28)`;
+        });
+        grid.addEventListener('pointerout', e => {
+            const img = e.target.closest('img');
+            if (!img || img.contains(e.relatedTarget)) return;
+            clearGridTilt(img);
+        });
+    });
+}
+function clearGridTilt(img) {
+    img.classList.remove('tilting');
+    img.style.transform = '';
+    img.style.boxShadow = '';
+}
+
 /* ─── MENÚ HAMBURGUESA (MÓVIL) ───────────────────────────────── */
 function toggleMobileMenu() {
     const menu = document.getElementById('tab-menu');
@@ -95,6 +232,8 @@ function closeMobileMenu() {
 
 document.addEventListener('DOMContentLoaded', function () {
     setupImageFades();
+    setupLightboxTilt();
+    setupGridTilt();
     document.querySelector('.tab-link').click();
     addCountBadges();
     updateTotalCounter();
@@ -202,10 +341,14 @@ async function openLightbox(imgElement) {
 
     const lb = document.getElementById('lightbox');
     const big = document.getElementById('lightbox-image');
+    clearGridTilt(imgElement);
+    resetTilt(true);
+    tilt.base = null;
     big.src = imgElement.src;
     try { await big.decode(); } catch (e) {}
 
     lb.classList.add('open');
+    kickTilt();
     if (reducedMotion.matches) return;
 
     const from = transformFromThumb(imgElement, big);
@@ -222,6 +365,7 @@ function closeLightbox() {
     if (!lb.classList.contains('open') || lightboxAnimating) return;
     const big = document.getElementById('lightbox-image');
     const thumb = currentTabImages[currentImageIndex];
+    resetTilt(true);
 
     if (reducedMotion.matches || !thumb) {
         lb.classList.remove('open');
